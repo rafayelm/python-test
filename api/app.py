@@ -9,18 +9,14 @@ from models import AnalyticsRequest, AnalyticsResponse, AnalyticsResponseItem, G
 
 app = Flask(__name__)
 
-# Connect to the database
-
 engine = create_engine('postgresql://myuser:mypassword@database:5432/mydb')
 Session = sessionmaker(bind=engine)
 
 
 def validate_input_params(request_args):
     try:
-        # Parse filters parameter
         request_data = AnalyticsRequest(**request_args)
 
-        # Validate groupBy attributes
         valid_attributes = [attr for attr in dir(Event)]
 
         invalid_attributes = set(request_data.groupBy.split(",")) - set(valid_attributes)
@@ -44,10 +40,8 @@ def create_query(session, request_data):
     else:
         return None, {"error": "granularity should be specified correctly"}
 
-    # Append valid groupBy attributes
     group_by_attributes.extend([getattr(Event, attribute) for attribute in request_data.groupBy.split(",")])
 
-    # Initialize query
     query = (
         session.query(
             *group_by_attributes,
@@ -57,12 +51,10 @@ def create_query(session, request_data):
         .group_by(*group_by_attributes)
     )
 
-    # Apply filters
     for filter_item in request_data.filters:
         filter_dict = dict(filter_item)
         query = query.filter(getattr(Event, filter_dict['attribute']) == filter_dict['value'])
 
-    # Apply date filters if provided
     if request_data.startDate:
         query = query.filter(Event.event_date >= request_data.startDate)
     if request_data.endDate:
@@ -80,7 +72,6 @@ def prepare_response(results):
 
     response_items = []
     for result in results:
-        # Extract the data from the result based on field names
         response_item_data = {field.replace('total_', ''): getattr(result, field) for field in field_names}
         response_item = AnalyticsResponseItem(**response_item_data)
         response_items.append(response_item)
@@ -100,7 +91,6 @@ def get_analytics_data():
         if error_response:
             return jsonify(error_response), 400  # Bad Request
 
-        # Execute the query and process results
         results = query.all()
 
         return prepare_response(results)
@@ -122,7 +112,7 @@ def add_event():
             return jsonify({"message": "Event added successfully"}), 200
         except IntegrityError as e:
             session.rollback()
-            return jsonify({"error": str(e)}), 400  # Bad Request, integrity error (e.g., duplicate ID)
+            return jsonify({"error": str(e)}), 400
 
 
 if __name__ == '__main__':
