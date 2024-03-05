@@ -50,7 +50,7 @@ This project provides Python APIs to interact with a PostgreSQL database for sto
 
 -   **Security:**  Currently database connection details are stored in plain text. This practice is discouraged. To enhance security, consider:
     -   Reading sensitive information from environment variables or a local configuration file.
--   **Testing:**  Integration tests are missing, consider, consider:
+-   **Testing:**  Integration tests are missing, consider:
     -   Adding integration tests to check logic with DB
 
 
