@@ -29,9 +29,6 @@ This project provides Python APIs to interact with a PostgreSQL database for sto
     git clone https://github.com/rafayelm/python-test.git
     ```
 
-
-    content_copy
-
 2.  Navigate to the project directory:
 
     Bash
@@ -39,9 +36,6 @@ This project provides Python APIs to interact with a PostgreSQL database for sto
     ```
     cd <your-project-name>
     ```
-
-
-    content_copy
 
 3.  Start the application and database using Docker Compose:
 
@@ -51,9 +45,6 @@ This project provides Python APIs to interact with a PostgreSQL database for sto
     cd docker-compose
     docker-compose up -d
     ```
-
-
-    content_copy
 
 **Improvements:**
 
