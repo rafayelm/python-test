@@ -52,6 +52,8 @@ This project provides Python APIs to interact with a PostgreSQL database for sto
     -   Reading sensitive information from environment variables or a local configuration file.
 -   **Testing:**  Integration tests are missing, consider:
     -   Adding integration tests to check logic with DB
+-   **Performance:**  Depending on DB and app resources, app could perform better using Pandas. Consider:
+    -   Adding another query endpoint with querying from DB with filters only, and then aggregating with Pandas. 
 
 
 **Usage:**
